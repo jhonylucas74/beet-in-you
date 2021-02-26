@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { theme } from '@style';
 
+export const Wrapper = styled.div`
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+`
+
 export const Input = styled.input`
   padding: 14px;
   font-size: 20px;
@@ -10,7 +16,17 @@ export const Input = styled.input`
   background-color: hsl(49deg 43% 90%);
   outline-color: ${theme.primaryColorDark};
   color: hsl(49deg 43% 30%);
-  margin: 20px 0;
+
+  &[aria-invalid="true"] {
+    color: ${theme.errorColor};
+    border-color: ${theme.errorColor};
+    background-color: ${theme.errorColorLight};
+    outline-color: ${theme.errorColor};
+
+    &::placeholder {
+      color: ${theme.errorColor};
+    }
+  }
 `;
 
 export const Label = styled.label`

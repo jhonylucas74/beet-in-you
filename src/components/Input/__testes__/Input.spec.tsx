@@ -45,4 +45,22 @@ describe('<Input />', () => {
 
     expect(handleChange).toBeCalledTimes(6);
   });
+
+  it('error should affect input and show message', () => {
+    const error = {
+      isInvalid: true,
+      message: 'this field is empty.'
+    }
+
+    render(
+      <Input
+        value={2}
+        error={error}
+        onChange={jest.fn()}
+      />
+    );
+    
+    expect(screen.getByRole('textbox')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByText(error.message)).toBeDefined();
+  });
 });
