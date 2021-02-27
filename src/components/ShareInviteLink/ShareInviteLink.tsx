@@ -2,12 +2,16 @@ import React from 'react';
 import * as style from './ShareInviteLink.styles'
 
 type ShareInviteLinkProps = {
-  token: string
+  token: string,
+  show: boolean
 } 
 
 const ShareInviteLink : React.FC<ShareInviteLinkProps> = ({
-  token
+  token,
+  show
 }) => {
+  if (!show) return null;
+
   return (
     <style.Content>
       <h4><b>Bee't</b> in you!</h4>

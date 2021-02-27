@@ -23,13 +23,21 @@ const UserList : React.FC<UserListProps> = ({
   handleAction,
   actionText = 'Iniciar partida'
 }) => {
+
+  const getEmoji = () => {
+    const devices = ['💻', '📱', '🎃'];
+    return devices[Math.floor(Math.random()*devices.length)];
+  }
+
   return (
     <style.Side>
       <h5>{title}</h5>
       <style.Users>
         {users.map((user, i) =>
           <style.User key={user.username}>
-            <b>500 🐝</b> {showRank && <span>{i + 1}°</span>} {user.username}
+            {showRank &&<>
+              <b>500 🐝</b> <span>{i + 1}°</span>
+            </>} {!showRank && getEmoji()} {user.username}
           </style.User>
         )}
       </style.Users>

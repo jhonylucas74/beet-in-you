@@ -4,18 +4,15 @@ import './App.css';
 import Choose from './scenes/Choose';
 import Join from './scenes/Join';
 import Play from './scenes/Play';
-import Wait from './scenes/Wait';
 
 function App() {
-  const [scene, setScene] = useState('wait')
+  const [scene, setScene] = useState('play');
 
   switch (scene) {
     case 'join':
       return <Join />
     case 'play':
       return <Play />
-    case 'wait':
-      return <Wait />
     case 'choose':
     default:
       return <Choose />
