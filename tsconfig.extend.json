@@ -3,6 +3,7 @@
     "baseUrl": "./src",
     "paths": {
       "@components/*": ["./components/*"],
+      "@utils/*": ["./utils/*"],
       "@style": ["./style/index.ts"]
     }
   }

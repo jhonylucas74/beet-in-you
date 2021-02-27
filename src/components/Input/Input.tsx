@@ -12,8 +12,9 @@ type InputProps = {
   label?: string,
   placeholder?: string
   value: any
-  onChange: Function,
   error?: error
+  onChange: Function,
+  onEnter?: Function 
 };
 
 const Input : React.FC<InputProps> = ({
@@ -21,9 +22,15 @@ const Input : React.FC<InputProps> = ({
   type = 'text',
   placeholder,
   value,
+  error = { isInvalid: false },
   onChange,
-  error = { isInvalid: false }
+  onEnter
 }) => {
+
+  const handleKeyPress = (event: any) => {
+    if (event.key === 'Enter' && onEnter) onEnter();
+  }
+
   return (
     <style.Wrapper>
       {label && <style.Label data-testid='label'>{label}</style.Label>}
@@ -32,6 +39,7 @@ const Input : React.FC<InputProps> = ({
         placeholder={placeholder}
         type={type}
         value={value}
+        onKeyPress={handleKeyPress}
         onChange={(e: any) => onChange(e.target.value)}
       />
       <ErrorMessage
