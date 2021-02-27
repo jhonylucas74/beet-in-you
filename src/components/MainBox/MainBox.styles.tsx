@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { theme } from '@style';
 
-export const WaitBox = styled.div`
+export const MainBox = styled.div`
   position: relative;
   width: 80%;
   max-width: 800px;
@@ -53,7 +53,7 @@ export const Users = styled.ul`
 `
 
 export const User = styled.li`
-  font-size: 18px;
+  font-size: 16px;
   padding: 5px 0;
   color: hsla(0deg 0% 0% / 60%);
   white-space: nowrap;
@@ -75,29 +75,6 @@ export const User = styled.li`
   }
 `
 
-export const Config = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  
-  h4 {
-    margin: 0 10px;
-    font-weight: 600;
-    font-size: 24px;
-    text-align: center;
-  }
-
-  p {
-    text-align: center;
-    color: hsla(0deg 0% 0% / 60%);
-    padding: 0 20px;
-
-    b {
-      font-weight: 600;
-    }
-  }
-`
 export const Button = styled.button`
   position: relative;
   display: block;

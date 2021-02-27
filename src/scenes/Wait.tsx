@@ -1,5 +1,7 @@
 import React from 'react';
-import WaitBox from '@components/WaitBox'
+import MainBox from '@components/MainBox';
+import UserList from '@components/UserList';
+import ShareInviteLink from '@components/ShareInviteLink';
 
 const users = [
   { username: 'Fulano' },
@@ -25,9 +27,14 @@ const users = [
 function Wait () {
   return (
     <div className='scene'>
-      <WaitBox
-        users={users}
-      />
+      <MainBox>
+        <UserList
+          showRank={false}
+          handleAction={() => console.log('Action')}
+          users={users}
+        />
+        <ShareInviteLink token='12' />
+      </MainBox>
     </div>
   )
 }
