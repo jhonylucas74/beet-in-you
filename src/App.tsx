@@ -7,7 +7,7 @@ import Play from './scenes/Play';
 import Wait from './scenes/Wait';
 
 function App() {
-  const [scene, setScene] = useState('join')
+  const [scene, setScene] = useState('wait')
 
   switch (scene) {
     case 'join':
