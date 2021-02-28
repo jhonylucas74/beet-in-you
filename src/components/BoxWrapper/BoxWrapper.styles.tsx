@@ -11,3 +11,8 @@ export const Box = styled.div`
   flex-direction: column;
   box-shadow: 0 5px 5px hsla(0deg 0% 0% / 10%);
 `;
+
+export const Text = styled.p`
+  color: hsla(0deg 0% 0% / 60%);
+  margin: 0 0 20px 0;
+`;

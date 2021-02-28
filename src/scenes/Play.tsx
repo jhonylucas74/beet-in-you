@@ -32,6 +32,7 @@ function Play () {
       <MainBox>
         <UserList
           showRank={isPlaying}
+          showAction={!isPlaying}
           handleAction={() => setPlaying(true)}
           users={users}
         />

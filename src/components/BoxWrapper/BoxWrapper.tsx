@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from './BoxWrapper.styles'
+import { Box, Text } from './BoxWrapper.styles'
 
 type BoxWrapperProps = {
   children: any

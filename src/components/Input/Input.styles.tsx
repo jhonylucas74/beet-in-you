@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 
 export const Input = styled.input`
   padding: 14px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 400;
   border: 1px solid hsl(49deg 43% 50%);;
   border-radius: 6px;

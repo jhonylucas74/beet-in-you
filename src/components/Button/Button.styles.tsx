@@ -2,19 +2,24 @@ import styled from 'styled-components';
 import { theme } from '@style';
 
 export const Button = styled.button`
-  padding: 15px;
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+  border: none;
   font-size: 16px;
   font-weight: 600;
-  border: none;
-  border-radius: 6px;
-  min-width: 200px;
-  text-transform: uppercase;
-  background-color: ${theme.primaryColor};
-  outline-color: ${theme.primaryColorDark};
-  color: #fff;
+  border-radius: 8px;
+  background-color: ${theme.primaryColorLight};
+  transition: all 0.3s ease-in-out;
   cursor: pointer;
 
   &:hover {
-    background-color: ${theme.primaryColorDark};
+    color: #fff;
+    background-color: #4c4b4b;
   }
-`;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 1pt #000;
+  }
+`
