@@ -36,6 +36,7 @@ const Input : React.FC<InputProps> = ({
       {label && <style.Label data-testid='label'>{label}</style.Label>}
       <style.Input
         aria-invalid={error.isInvalid}
+        className='input-cp'
         placeholder={placeholder}
         type={type}
         value={value}
