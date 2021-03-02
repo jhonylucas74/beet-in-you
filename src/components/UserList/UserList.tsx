@@ -4,6 +4,7 @@ import { ClickFunction } from '@interfaces/Functions';
 
 type User = {
   username: string
+  emoji: string
 }
 
 type UserListProps = {
@@ -23,12 +24,6 @@ const UserList : React.FC<UserListProps> = ({
   handleAction,
   actionText = 'Iniciar partida'
 }) => {
-
-  const getEmoji = () => {
-    const devices = ['💻', '📱', '🎃'];
-    return devices[Math.floor(Math.random()*devices.length)];
-  }
-
   return (
     <style.Side>
       <h5>{title}</h5>
@@ -36,8 +31,8 @@ const UserList : React.FC<UserListProps> = ({
         {users.map((user, i) =>
           <style.User key={user.username}>
             {showRank &&<>
-              <b>500 🐝</b> <span>{i + 1}°</span>
-            </>} {!showRank && getEmoji()} {user.username}
+              <b>500</b> <span>{i + 1}°</span>
+            </>} {user.emoji} {user.username}
           </style.User>
         )}
       </style.Users>

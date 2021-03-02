@@ -6,7 +6,7 @@ import Join from './scenes/Join';
 import Play from './scenes/Play';
 
 function App() {
-  const [scene, setScene] = useState('join');
+  const [scene, setScene] = useState('play');
 
   switch (scene) {
     case 'join':
