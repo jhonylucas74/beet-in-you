@@ -77,7 +77,12 @@ export const Bar = styled.div<BarProps>`
   ${({active}) => active && activeBar}
 `;
 
-export const BarButton = styled.button`
+type BarBtnProps = {
+  isFail: boolean,
+  isSelected: boolean
+}
+
+export const BarButton = styled.button<BarBtnProps>`
   flex: 1;
   position: relative;
   display: block;
@@ -90,6 +95,10 @@ export const BarButton = styled.button`
   transition: all 0.3s ease-in-out;
   cursor: default;
   outline: none;
+  
+  ${({ isFail, isSelected }) => isFail && css`
+    background-color: ${isSelected ? '#f1bcaf' : '#dacfaf'};
+  `}
 `;
 
 
