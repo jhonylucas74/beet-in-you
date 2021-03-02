@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Bar from './Bar'
+import { GameMode } from '@constants';
+import confetti from './confetti';
 import * as style from './BetPlayground.styles';
 
 type BetPlaygroundProps = {
@@ -13,55 +15,64 @@ const bars = [
 ].reverse()
 
 export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
-  const [becoins, setBecoins] = useState(500)
-  const [bet, setBet] = useState(10)
-  const [index, setIndex] = useState(0)
-  const [matchId, setMatchId] = useState('')
-  const [isSuspense, setSuspense] = useState(false)
+  const [becoins, setBecoins] = useState(500);
+  const [bet, setBet] = useState(10);
+  const [index, setIndex] = useState(-1);
+  const [matchId, setMatchId] = useState('');
+  const [isSuspense, setSuspense] = useState(false);
 
   const createMatch = () => {
     setMatchId(randomId());
-    setIndex(bars[bars.length - 1]);
+    setIndex(bars.length - 1);
     setSuspense(false);
   }
   
   const handleSelectBar = (i: number, hasFailed = false) => {
     if (hasFailed) {
-      setIndex(0);
+      setIndex(-1);
       setBecoins(becoins - bet);
       return setSuspense(true);
     }
 
     if (i < 0) {
-      createMatch();
+      confetti();
+      receiveBecoins();
     } else {
-      setIndex(bars[i])
+      setIndex(i)
     }
   }
 
   const incBet = () => {
-    if (bet < 30 && index === 0) {
+    if (bet < 30 && index === -1) {
       setBet(bet + 5);
     }
   }
 
   const decBet = () => {
-    if (bet > 10 && index === 0) {
+    if (bet > 10 && index === -1) {
       setBet(bet - 5);
     }
   }
 
   const getBtnText = () => {
-    return index === 0 ? '💸 Apostar' : '💴 Terminar'
+    return index === -1 ? '💸 Apostar' : '💴 Terminar'
+  }
+
+  const receiveBecoins = () => {
+    const multiplier = bars[index + 1];
+    setIndex(-1);
+
+    if (multiplier) {
+      setBecoins(becoins + (bet * multiplier));
+      setSuspense(true);
+    }
   }
 
   const handleCTA = () => {
-    if (index === 0) {
+    if (index === -1) {
       createMatch();
     } else {
-      setIndex(0);
-      setBecoins(becoins + (bet * index));
-      return setSuspense(true);
+      receiveBecoins();
     }
   }
   
@@ -72,23 +83,24 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
       <style.Bars>
         {bars.map((elm, i) =>
           <Bar
+            gameMode={GameMode.Easy}
             key={elm}
             value={elm}
             isSuspense={isSuspense}
             matchId={matchId}
             onClick={(fail : boolean) => handleSelectBar(i - 1, fail)}
-            active={index === elm}
+            active={index === i}
           />
         )}
       </style.Bars>
       <style.Bet>
-        <style.BetAmout disabled={index != 0}>
+        <style.BetAmout disabled={index != -1}>
           <span onClick={() => decBet()}>-</span>
             {bet} becoins
           <span onClick={() => incBet()}>+</span>
         </style.BetAmout>
         <style.BetButton
-          isPlaying={index != 0}
+          isPlaying={index != -1}
           onClick={handleCTA}>
             {getBtnText()}
         </style.BetButton>

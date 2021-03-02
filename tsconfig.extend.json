@@ -5,7 +5,8 @@
       "@components/*": ["./components/*"],
       "@utils/*": ["./utils/*"],
       "@style": ["./style/index.ts"],
-      "@interfaces/*": ["./interfaces/*"]
+      "@interfaces/*": ["./interfaces/*"],
+      "@constants": ["./constants.ts"]
     }
   }
 }

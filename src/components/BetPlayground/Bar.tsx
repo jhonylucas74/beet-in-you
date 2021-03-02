@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { GameMode } from '@constants';
 import * as style from './BetPlayground.styles';
 
 type BarProps = {
   matchId: string
   active: boolean,
+  gameMode: GameMode,
   isSuspense: boolean,
   value: number,
   onClick: Function,
@@ -19,7 +21,8 @@ const Bar : React.FC<BarProps> =  ({
   value,
   active,
   onClick,
-  isSuspense
+  isSuspense,
+  gameMode
 }) => {
   const [options, setOptions] = useState(initalState);
   const [choonse, setChoonse] = useState(-1);
@@ -28,8 +31,13 @@ const Bar : React.FC<BarProps> =  ({
   useEffect(() => {
     if (matchId) {
       setSelected(false);
-      const state = {...initalState}
-      state[getRamdom(0, 2)] = true;
+      let state = {...initalState}
+
+      if (gameMode === GameMode.Easy) {
+        state = [true, true, true];
+      }
+
+      state[getRamdom(0, 2)] = gameMode !== GameMode.Easy;
       setOptions(state);
       setChoonse(-1);
     }
