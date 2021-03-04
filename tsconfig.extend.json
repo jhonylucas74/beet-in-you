@@ -6,7 +6,8 @@
       "@utils/*": ["./utils/*"],
       "@style": ["./style/index.ts"],
       "@interfaces/*": ["./interfaces/*"],
-      "@constants": ["./constants.ts"]
+      "@constants": ["./constants.ts"],
+      "@assets/*": ["./assets/*"]
     }
   }
 }

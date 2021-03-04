@@ -3,6 +3,7 @@ import Bar from './Bar'
 import { GameMode } from '@constants';
 import confetti from './confetti';
 import * as style from './BetPlayground.styles';
+import { playAudio } from '@utils/audio';
 
 type BetPlaygroundProps = {
   show: boolean
@@ -30,15 +31,18 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
   const handleSelectBar = (i: number, hasFailed = false) => {
     if (hasFailed) {
       setIndex(-1);
+      playAudio('fail');
       setBecoins(becoins - bet);
       return setSuspense(true);
     }
 
     if (i < 0) {
       confetti();
+      playAudio('strike');
       receiveBecoins();
     } else {
-      setIndex(i)
+      playAudio('sucess');
+      setIndex(i);
     }
   }
 
@@ -70,8 +74,13 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
 
   const handleCTA = () => {
     if (index === -1) {
+      playAudio('start');
       createMatch();
     } else {
+      if (index != bars.length - 1) {
+        playAudio('cash');
+      }
+
       receiveBecoins();
     }
   }

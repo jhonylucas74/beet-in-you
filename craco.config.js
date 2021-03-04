@@ -1,3 +1,4 @@
+const { addAfterLoaders, loaderByName } = require("@craco/craco");
 const CracoAlias = require("craco-alias");
 
 module.exports = {
