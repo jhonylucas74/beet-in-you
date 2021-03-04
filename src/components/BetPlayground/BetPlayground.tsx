@@ -4,6 +4,7 @@ import { GameMode } from '@constants';
 import confetti from './confetti';
 import * as style from './BetPlayground.styles';
 import { playAudio } from '@utils/audio';
+import DiffCoins from './DiffCoins';
 
 type BetPlaygroundProps = {
   show: boolean
@@ -18,6 +19,7 @@ const bars = [
 export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
   const [becoins, setBecoins] = useState(500);
   const [bet, setBet] = useState(10);
+  const [diff, setDiff] : any = useState()
   const [index, setIndex] = useState(-1);
   const [matchId, setMatchId] = useState('');
   const [isSuspense, setSuspense] = useState(false);
@@ -32,6 +34,12 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
     if (hasFailed) {
       setIndex(-1);
       playAudio('fail');
+      
+      setDiff({
+        value: `-${bet}`,
+        time: new Date().toString()
+      });
+
       setBecoins(becoins - bet);
       return setSuspense(true);
     }
@@ -67,6 +75,11 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
     setIndex(-1);
 
     if (multiplier) {
+      setDiff({
+        value: `+${bet * multiplier}`,
+        time: new Date().toString()
+      });
+
       setBecoins(becoins + (bet * multiplier));
       setSuspense(true);
     }
@@ -88,6 +101,7 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
   if (!show) return null;
   return (
     <style.Box>
+      <DiffCoins data={diff}/>
       <style.Money>Você tem <span>{becoins}</span> beecoins</style.Money>
       <style.Bars>
         {bars.map((elm, i) =>

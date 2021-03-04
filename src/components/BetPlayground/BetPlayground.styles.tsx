@@ -7,6 +7,7 @@ export const Box = styled.div`
   flex-direction: column;
   align-items: center;
   user-select: none;
+  position: relative;
 `;
 
 export const Money = styled.div`
@@ -198,3 +199,17 @@ export const BetButton = styled.div<BetButtonProps>`
     background-color: #4c4b4b;
   }
 `;
+
+type DiffCoinsProps = {
+  isPositive: boolean
+}
+
+export const DiffCoins =  styled.span<DiffCoinsProps>`
+  position: absolute;
+  left: 50%;
+  top: 5px;
+  font-size: 18px;
+  font-weight: 600;
+  color: ${({ isPositive }) => isPositive? '#82d082': '#f36e7e' };
+  transform: translateX(-50%); 
+`
