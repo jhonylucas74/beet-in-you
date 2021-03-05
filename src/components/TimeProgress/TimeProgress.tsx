@@ -3,7 +3,7 @@ import * as style from './TimeProgress.styles'
 import useInterval from '@use-it/interval';
 import GameState from '@store/gameState';
 import dayjs from 'dayjs';
-import { GameMode } from '@constants';
+import { GameMode, LEVEL_TIME } from '@constants';
 
 type TimeProgressProps = {
   
@@ -13,7 +13,7 @@ const TimeProgress : React.FC<TimeProgressProps> = ({
   
 }) => {
   const [start, setStart] = useState(dayjs());
-  const [end, setEnd] = useState(dayjs().add(2, 'minutes'));
+  const [end, setEnd] = useState(dayjs().add(LEVEL_TIME, 'minutes'));
   const [percentage, setPercentage] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const gameMode = GameState.useState();
@@ -41,12 +41,13 @@ const TimeProgress : React.FC<TimeProgressProps> = ({
           case GameMode.Medium:
             s.mode = GameMode.Hard;
             break;
-          default:
           case GameMode.Hard:
-            // end game
+          default:
+            s.mode = GameMode.GameOver;
+            break;
         }
 
-        s.time = dayjs().add(0.5, 'minute');
+        s.time = dayjs().add(LEVEL_TIME, 'minute');
       })
     }
 

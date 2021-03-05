@@ -35,7 +35,7 @@ const Join: React.FC<JoinProps> = ({ handleJoin }) => {
   return (
     <div className='scene'>
       <BoxWrapper>
-        <h3>Entrar no jogo</h3>
+        <h3>Diga, quem é você?</h3>
         <EmojiInput
           value={emoji}
           onChange={setEmoji}

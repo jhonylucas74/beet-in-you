@@ -3,7 +3,8 @@ import MainBox from '@components/MainBox';
 import UserList from '@components/UserList';
 import ShareInviteLink from '@components/ShareInviteLink';
 import BetPlayground from '@components/BetPlayground';
-import { GameMode } from '@constants';
+import Victory from '@components/Victory';
+import { GameMode, LEVEL_TIME } from '@constants';
 import GameState from '@store/gameState';
 import usePeerEvent from '@utils/hooks/usePeerEvent';
 import PeerController from '@utils/PeerController';
@@ -20,13 +21,14 @@ type PlayProps = {
 const Play: React.FC<PlayProps> = ({ host, userStore }) => {
   const [isPlaying, setPlaying] = useState(false);
   const users = userStore.useState((s: any) => s.users);
+  const gameMode = GameState.useState(s => s.mode)
 
   const applyPlayChanges = () => {
     setPlaying(true);
 
     GameState.update(s => {
       s.mode = GameMode.Easy;
-      s.time = dayjs().add(0.5, 'minute');
+      s.time = dayjs().add(LEVEL_TIME, 'minutes');
     })
   }
 
@@ -77,6 +79,8 @@ const Play: React.FC<PlayProps> = ({ host, userStore }) => {
     applyPlayChanges()
   })
 
+  const isGameOver = gameMode === GameMode.GameOver;
+
   return (
     <div className='scene'>
       <MainBox>
@@ -86,8 +90,9 @@ const Play: React.FC<PlayProps> = ({ host, userStore }) => {
           handleAction={handlePlay}
           users={users}
         />
-        <ShareInviteLink show={!isPlaying} host={host} />
-        <BetPlayground show={isPlaying} />
+        <ShareInviteLink show={!isPlaying && !isGameOver} host={host} />
+        <BetPlayground show={isPlaying && !isGameOver} />
+        <Victory show={isGameOver} />
       </MainBox>
     </div>
   )

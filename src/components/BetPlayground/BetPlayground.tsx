@@ -8,6 +8,8 @@ import TimeProgress from '@components/TimeProgress';
 import PeerController from '@utils/PeerController';
 import UserStore from '@store/user';
 import UsersStore from '@store/users';
+import GameState from '@store/gameState';
+import { GameMode } from '@constants';
 
 type BetPlaygroundProps = {
   show: boolean
@@ -27,13 +29,19 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
   const [matchId, setMatchId] = useState('');
   const [isSuspense, setSuspense] = useState(false);
   const localUser = UserStore.useState((s: any) => s.user);
-  const [limitTime, setLimitTime] = useState()
+  const gameMode = GameState.useState(s => s.mode)
 
   const createMatch = () => {
     setMatchId(randomId());
     setIndex(bars.length - 1);
     setSuspense(false);
   }
+
+  useEffect(() => {
+    if ([GameMode.Medium, GameMode.Hard].includes(gameMode)) {
+      receiveBecoins()
+    }
+  }, [gameMode])
 
   useEffect(() => {
     const user = { username: localUser.name , becoins };
