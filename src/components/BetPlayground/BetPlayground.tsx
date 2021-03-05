@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Bar from './Bar'
 import confetti from './confetti';
 import * as style from './BetPlayground.styles';
 import { playAudio } from '@utils/audio';
 import DiffCoins from './DiffCoins';
+import PeerController from '@utils/PeerController';
+import UserStore from '@store/user';
+import UsersStore from '@store/users';
 
 type BetPlaygroundProps = {
   show: boolean
@@ -22,12 +25,31 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
   const [index, setIndex] = useState(-1);
   const [matchId, setMatchId] = useState('');
   const [isSuspense, setSuspense] = useState(false);
+  const localUser = UserStore.useState((s: any) => s.user);
 
   const createMatch = () => {
     setMatchId(randomId());
     setIndex(bars.length - 1);
     setSuspense(false);
   }
+
+  useEffect(() => {
+    const user = { username: localUser.name , becoins };
+
+    PeerController.send({
+      event: 'UpdateBecoins',
+      data: user
+    })
+
+    UsersStore.update((s: any) => {
+      s.users = s.users.map((elm: any) => {
+        if (elm.username === user.username) {
+          elm.becoins = user.becoins
+        }
+        return elm;
+      })
+    })
+  }, [becoins])
   
   const handleSelectBar = (i: number, hasFailed = false) => {
     if (hasFailed) {

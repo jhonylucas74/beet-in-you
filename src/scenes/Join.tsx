@@ -14,17 +14,21 @@ const formValidator = validator.createForm([
   }
 ])
 
-function Join () {
-  const [name, setName] = useState('')
-  const [emoji, setEmoji] = useState('🐶')
-  const [errors, setErrors] = useState(formValidator.reset())
+type JoinProps = {
+  handleJoin: any
+}
+
+const Join: React.FC<JoinProps> = ({ handleJoin }) => {
+  const [name, setName] = useState('');
+  const [emoji, setEmoji] = useState('1f436');
+  const [errors, setErrors] = useState(formValidator.reset());
 
   const handleSubmit = () => {
-    const result = formValidator.validate({ name })
-    setErrors(result.errors)
+    const result = formValidator.validate({ name });
+    setErrors(result.errors);
 
     if (result.isValid) {
-      console.log('>>>')
+      handleJoin({ name, emoji });
     }
   }
 

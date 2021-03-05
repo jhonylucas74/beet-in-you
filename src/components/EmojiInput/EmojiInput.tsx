@@ -19,14 +19,15 @@ const EmojiInput : React.FC<EmojiInputProps> = ({
   const [show, setShow] = useState(false);
 
   const handleSelect = (e : any) => {
-    onChange(e.native)
+    console.log(e)
+    onChange(e. unified)
     setShow(false);
   };
 
   return (
     <style.Wrapper>
       <style.EmojiWrapper>
-        <style.Emoji onClick={() => setShow(!show)}>{value}</style.Emoji>
+        <style.Emoji onClick={() => setShow(!show)}>{String.fromCodePoint(parseInt(value, 16))}</style.Emoji>
         { show && <style.Dialog>
           <Picker
             title='Beet in you' emoji='bee'

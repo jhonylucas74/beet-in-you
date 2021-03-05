@@ -1,39 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainBox from '@components/MainBox';
 import UserList from '@components/UserList';
 import ShareInviteLink from '@components/ShareInviteLink';
 import BetPlayground from '@components/BetPlayground';
 import { GameMode } from '@constants';
 import GameModeContext from '@contexts/GameMode';
+import usePeerEvent from '@utils/hooks/usePeerEvent';
+import PeerController from '@utils/PeerController';
 
-
-const getEmoji = () => {
-  const devices = ['💻', '📱', '🎃'];
-  return devices[Math.floor(Math.random()*devices.length)];
+type PlayProps = {
+  userStore: any,
+  host: { 
+    isHost: boolean,
+    id: string
+  }
 }
 
-const users = [
-  { username: 'Fulano' , emoji: getEmoji()},
-  { username: 'Ciclano' , emoji: getEmoji()},
-  { username: 'Guilerme da silva' , emoji: getEmoji()},
-  { username: 'Mano mano' , emoji: getEmoji()},
-]
-
-function Play () {
+const Play: React.FC<PlayProps> = ({ host, userStore }) => {
   const [isPlaying, setPlaying] = useState(false);
-  const [gameMode, SetGameMode] = useState(GameMode.Easy); 
+  const [gameMode, SetGameMode] = useState(GameMode.Easy);
+  const users = userStore.useState((s: any) => s.users);
+
+  usePeerEvent('JoinPlayer', (user: any) => {
+    const newUser = {
+      username: user.name,
+      emoji: user.emoji,
+      becoins: 500
+    }
+
+    if (host.isHost) {
+      const data = userStore.getRawState()
+
+      PeerController.send({
+        event: 'UpdateUsers',
+        data: [...data.users, newUser]
+      });
+    }
+
+    userStore.update((s: any) => {
+      s.users = [...s.users, newUser]
+    })
+  })
+
+  usePeerEvent('UpdateBecoins', (user: any) => {
+    userStore.update((s: any) => {
+      s.users = s.users.map((elm: any) => {
+        if (elm.username === user.username) {
+          elm.becoins = user.becoins
+        }
+        return elm;
+      })
+    })
+  })
+
+  usePeerEvent('UpdateUsers', (state: any) => {
+    userStore.update((s: any) => {
+      s.users = state || []
+    })
+  })
+  
+  usePeerEvent('GameIsPlaying', () => {
+    setPlaying(true);
+  })
 
   return (
     <div className='scene'>
       <MainBox>
         <UserList
           showRank={isPlaying}
-          showAction={!isPlaying}
-          handleAction={() => setPlaying(true)}
+          showAction={!isPlaying && host.isHost}
+          handleAction={() => {
+            setPlaying(true);
+            PeerController.send({ event: 'GameIsPlaying', data: true })
+          }}
           users={users}
         />
         <GameModeContext.Provider value={gameMode}>
-          <ShareInviteLink show={!isPlaying} token='12' />
+          <ShareInviteLink show={!isPlaying} host={host} />
           <BetPlayground show={isPlaying} />
         </GameModeContext.Provider>
       </MainBox>

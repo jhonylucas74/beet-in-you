@@ -43,7 +43,7 @@ export const Users = styled.ul`
 export const User = styled.li`
   font-size: 16px;
   padding: 5px 0;
-  color: hsla(0deg 0% 0% / 60%);
+  color: #333;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

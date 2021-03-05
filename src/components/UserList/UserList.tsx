@@ -5,6 +5,7 @@ import { ClickFunction } from '@interfaces/Functions';
 type User = {
   username: string
   emoji: string
+  becoins: string | number
 }
 
 type UserListProps = {
@@ -24,15 +25,24 @@ const UserList : React.FC<UserListProps> = ({
   handleAction,
   actionText = 'Iniciar partida'
 }) => {
+
+  const getSorted = () => {
+    return [...users].sort((a: any, b: any) => {
+      if (a.becoins > b.becoins) return 1;
+      if (a.becoins < b.becoins) return -1;
+      return 0
+    })
+  }
+
   return (
     <style.Side>
       <h5>{title}</h5>
       <style.Users>
-        {users.map((user, i) =>
+        {getSorted().map((user: any, i: number) =>
           <style.User key={user.username}>
             {showRank &&<>
-              <b>500</b> <span>{i + 1}°</span>
-            </>} {user.emoji} {user.username}
+              <b>{user.becoins}</b> <span>{i + 1}°</span>
+            </>} {String.fromCodePoint(parseInt(user.emoji, 16))} {user.username}
           </style.User>
         )}
       </style.Users>
