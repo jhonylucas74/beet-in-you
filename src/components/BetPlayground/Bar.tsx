@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { GameMode } from '@constants';
-import GameModeContext from '@contexts/GameMode';
+import GameState from '@store/gameState';
 import * as style from './BetPlayground.styles';
 
 type BarProps = {
@@ -26,18 +26,18 @@ const Bar : React.FC<BarProps> =  ({
   const [options, setOptions] = useState(initalState);
   const [choonse, setChoonse] = useState(-1);
   const [isSelected, setSelected] = useState(false);
-  const gameMode = useContext(GameModeContext);
+  const gameMode = GameState.useState();
 
   const resetBarState = () => {
     setSelected(false);
     let state = {...initalState}
 
-    if (gameMode === GameMode.Easy) {
+    if (gameMode.mode === GameMode.Easy) {
       state = [true, true, true];
     }
 
-    const limit = gameMode === GameMode.Medium ? 1 : 2;
-    state[getRamdom(0, limit)] = gameMode !== GameMode.Easy;
+    const limit = gameMode.mode === GameMode.Medium ? 1 : 2;
+    state[getRamdom(0, limit)] = gameMode.mode !== GameMode.Easy;
     setOptions(state);
     setChoonse(-1);
   }
@@ -88,7 +88,7 @@ const Bar : React.FC<BarProps> =  ({
         onClick={() => handleClick(1)}>
           {getEmoji(1)}
       </style.BarButton>
-      { gameMode !== GameMode.Medium && <style.BarButton 
+      { gameMode.mode !== GameMode.Medium && <style.BarButton 
         isFail={showBg(2)}
         isSelected={choonse === 2}
         onClick={() => handleClick(2)}>

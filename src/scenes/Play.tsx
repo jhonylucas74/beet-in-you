@@ -4,9 +4,10 @@ import UserList from '@components/UserList';
 import ShareInviteLink from '@components/ShareInviteLink';
 import BetPlayground from '@components/BetPlayground';
 import { GameMode } from '@constants';
-import GameModeContext from '@contexts/GameMode';
+import GameState from '@store/gameState';
 import usePeerEvent from '@utils/hooks/usePeerEvent';
 import PeerController from '@utils/PeerController';
+import dayjs from 'dayjs';
 
 type PlayProps = {
   userStore: any,
@@ -18,8 +19,21 @@ type PlayProps = {
 
 const Play: React.FC<PlayProps> = ({ host, userStore }) => {
   const [isPlaying, setPlaying] = useState(false);
-  const [gameMode, SetGameMode] = useState(GameMode.Easy);
   const users = userStore.useState((s: any) => s.users);
+
+  const applyPlayChanges = () => {
+    setPlaying(true);
+
+    GameState.update(s => {
+      s.mode = GameMode.Easy;
+      s.time = dayjs().add(0.5, 'minute');
+    })
+  }
+
+  const handlePlay = () => {
+    applyPlayChanges()
+    PeerController.send({ event: 'GameIsPlaying', data: true })
+  }
 
   usePeerEvent('JoinPlayer', (user: any) => {
     const newUser = {
@@ -60,7 +74,7 @@ const Play: React.FC<PlayProps> = ({ host, userStore }) => {
   })
   
   usePeerEvent('GameIsPlaying', () => {
-    setPlaying(true);
+    applyPlayChanges()
   })
 
   return (
@@ -69,16 +83,11 @@ const Play: React.FC<PlayProps> = ({ host, userStore }) => {
         <UserList
           showRank={isPlaying}
           showAction={!isPlaying && host.isHost}
-          handleAction={() => {
-            setPlaying(true);
-            PeerController.send({ event: 'GameIsPlaying', data: true })
-          }}
+          handleAction={handlePlay}
           users={users}
         />
-        <GameModeContext.Provider value={gameMode}>
-          <ShareInviteLink show={!isPlaying} host={host} />
-          <BetPlayground show={isPlaying} />
-        </GameModeContext.Provider>
+        <ShareInviteLink show={!isPlaying} host={host} />
+        <BetPlayground show={isPlaying} />
       </MainBox>
     </div>
   )

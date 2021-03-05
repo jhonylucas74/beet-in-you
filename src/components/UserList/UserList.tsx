@@ -28,8 +28,8 @@ const UserList : React.FC<UserListProps> = ({
 
   const getSorted = () => {
     return [...users].sort((a: any, b: any) => {
-      if (a.becoins > b.becoins) return 1;
-      if (a.becoins < b.becoins) return -1;
+      if (a.becoins > b.becoins) return -1;
+      if (a.becoins < b.becoins) return 1;
       return 0
     })
   }

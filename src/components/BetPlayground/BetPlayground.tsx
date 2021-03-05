@@ -4,6 +4,7 @@ import confetti from './confetti';
 import * as style from './BetPlayground.styles';
 import { playAudio } from '@utils/audio';
 import DiffCoins from './DiffCoins';
+import TimeProgress from '@components/TimeProgress';
 import PeerController from '@utils/PeerController';
 import UserStore from '@store/user';
 import UsersStore from '@store/users';
@@ -26,6 +27,7 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
   const [matchId, setMatchId] = useState('');
   const [isSuspense, setSuspense] = useState(false);
   const localUser = UserStore.useState((s: any) => s.user);
+  const [limitTime, setLimitTime] = useState()
 
   const createMatch = () => {
     setMatchId(randomId());
@@ -115,6 +117,7 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
   }
   
   if (!show) return null;
+
   return (
     <style.Box>
       <DiffCoins data={diff}/>
@@ -144,6 +147,8 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
             {getBtnText()}
         </style.BetButton>
       </style.Bet>
+
+      <TimeProgress />
     </style.Box>
   )
 };
