@@ -170,7 +170,8 @@ export const BetAmout = styled.div<BetAmountProp>`
 `;
 
 type BetButtonProps = {
-  isPlaying: boolean
+  isPlaying: boolean,
+  disabled: boolean
 }
 
 export const BetButton = styled.div<BetButtonProps>`
@@ -198,6 +199,12 @@ export const BetButton = styled.div<BetButtonProps>`
     color: #fff;
     background-color: #4c4b4b;
   }
+
+  ${({ disabled }) => disabled && css`
+    opacity: 0.5;
+    background-color: hsla(0deg 0% 0% / 10%);
+    pointer-events: none;
+  `}
 `;
 
 type DiffCoinsProps = {

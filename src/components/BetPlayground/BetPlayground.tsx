@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Bar from './Bar'
-import { GameMode } from '@constants';
 import confetti from './confetti';
 import * as style from './BetPlayground.styles';
 import { playAudio } from '@utils/audio';
@@ -34,13 +33,8 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
     if (hasFailed) {
       setIndex(-1);
       playAudio('fail');
-      
-      setDiff({
-        value: `-${bet}`,
-        time: new Date().toString()
-      });
-
-      setBecoins(becoins - bet);
+      setDiff({ value: `-${bet}`, time: new Date().toString() });
+      setBecoins(Math.max(becoins - bet, 0));
       return setSuspense(true);
     }
 
@@ -106,7 +100,6 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
       <style.Bars>
         {bars.map((elm, i) =>
           <Bar
-            gameMode={GameMode.Easy}
             key={elm}
             value={elm}
             isSuspense={isSuspense}
@@ -123,6 +116,7 @@ export const BetPlayground : React.FC<BetPlaygroundProps> = ({ show }) => {
           <span onClick={() => incBet()}>+</span>
         </style.BetAmout>
         <style.BetButton
+          disabled={becoins <= 0}
           isPlaying={index != -1}
           onClick={handleCTA}>
             {getBtnText()}

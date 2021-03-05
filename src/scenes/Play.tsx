@@ -3,6 +3,9 @@ import MainBox from '@components/MainBox';
 import UserList from '@components/UserList';
 import ShareInviteLink from '@components/ShareInviteLink';
 import BetPlayground from '@components/BetPlayground';
+import { GameMode } from '@constants';
+import GameModeContext from '@contexts/GameMode';
+
 
 const getEmoji = () => {
   const devices = ['💻', '📱', '🎃'];
@@ -18,6 +21,7 @@ const users = [
 
 function Play () {
   const [isPlaying, setPlaying] = useState(false);
+  const [gameMode, SetGameMode] = useState(GameMode.Easy); 
 
   return (
     <div className='scene'>
@@ -28,8 +32,10 @@ function Play () {
           handleAction={() => setPlaying(true)}
           users={users}
         />
-        <ShareInviteLink show={!isPlaying} token='12' />
-        <BetPlayground show={isPlaying} />
+        <GameModeContext.Provider value={gameMode}>
+          <ShareInviteLink show={!isPlaying} token='12' />
+          <BetPlayground show={isPlaying} />
+        </GameModeContext.Provider>
       </MainBox>
     </div>
   )

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { GameMode } from '@constants';
+import GameModeContext from '@contexts/GameMode';
 import * as style from './BetPlayground.styles';
 
 type BarProps = {
   matchId: string
   active: boolean,
-  gameMode: GameMode,
   isSuspense: boolean,
   value: number,
   onClick: Function,
@@ -22,24 +22,29 @@ const Bar : React.FC<BarProps> =  ({
   active,
   onClick,
   isSuspense,
-  gameMode
 }) => {
   const [options, setOptions] = useState(initalState);
   const [choonse, setChoonse] = useState(-1);
   const [isSelected, setSelected] = useState(false);
+  const gameMode = useContext(GameModeContext);
+
+  const resetBarState = () => {
+    setSelected(false);
+    let state = {...initalState}
+
+    if (gameMode === GameMode.Easy) {
+      state = [true, true, true];
+    }
+
+    const limit = gameMode === GameMode.Medium ? 1 : 2;
+    state[getRamdom(0, limit)] = gameMode !== GameMode.Easy;
+    setOptions(state);
+    setChoonse(-1);
+  }
 
   useEffect(() => {
     if (matchId) {
-      setSelected(false);
-      let state = {...initalState}
-
-      if (gameMode === GameMode.Easy) {
-        state = [true, true, true];
-      }
-
-      state[getRamdom(0, 2)] = gameMode !== GameMode.Easy;
-      setOptions(state);
-      setChoonse(-1);
+      resetBarState();
     }
   },[matchId])
 
@@ -83,12 +88,12 @@ const Bar : React.FC<BarProps> =  ({
         onClick={() => handleClick(1)}>
           {getEmoji(1)}
       </style.BarButton>
-      <style.BarButton 
+      { gameMode !== GameMode.Medium && <style.BarButton 
         isFail={showBg(2)}
         isSelected={choonse === 2}
         onClick={() => handleClick(2)}>
           {getEmoji(2)}
-      </style.BarButton>
+      </style.BarButton>}
     </style.Bar>
   )
 }
